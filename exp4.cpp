@@ -88,15 +88,21 @@ void find_follow_sets(char symbol) {
 }
 
 int main() {
-    productions['S'] = {"A", "B"};
+       productions['S'] = {"Aa", "Bb"};
     productions['A'] = {"aB", "aa"};
     productions['B'] = {"b"};
 
-    for (auto production : productions) {
-        char symbol = production.first;
-        find_first_sets(symbol);
-        find_follow_sets(symbol);
-    }
+    // compute first sets for all non-terminals in the grammar
+for (auto production : productions) {
+    char symbol = production.first;
+    find_first_sets(symbol);
+}
+
+// compute follow sets for all non-terminals in the grammar
+for (auto production : productions) {
+    char symbol = production.first;
+    find_follow_sets(symbol);
+}
 
     cout << "First sets:" << endl;
 
