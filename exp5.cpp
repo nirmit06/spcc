@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
-#include <stack>
-#include <map>
+#include<bits/stdc++.h>
 //input string: aabb
 using namespace std;
 
