@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-
 using namespace std;
 
 unordered_map<char, vector<string>> productions;
@@ -13,18 +12,7 @@ void find_first_sets(char symbol) {
     for (string rule : production_rules) {
         char first_symbol = rule[0];
 
-        if (isupper(first_symbol)) {
-            find_first_sets(first_symbol);
-
-            unordered_set<char> first_symbols = first_sets[first_symbol];
-
-            for (char symbol : first_symbols) {
-                first_set.insert(symbol);
-            }
-        }
-        else {
-            first_set.insert(first_symbol);
-        }
+        first_set.insert(first_symbol);
     }
 
     first_sets[symbol] = first_set;
@@ -39,57 +27,24 @@ void find_follow_sets(char symbol) {
 
     for (auto production : productions) {
         char non_terminal = production.first;
+        // cout<<non_terminal<<"\n";
         vector<string> production_rules = production.second;
 
         for (string rule : production_rules) {
             size_t index = rule.find(symbol);
 
             if (index != string::npos) {
-                if (index + 1 < rule.size()) {
                     char next_symbol = rule[index + 1];
-
-                    if (isupper(next_symbol)) {
-                        unordered_set<char> first_symbols = first_sets[next_symbol];
-
-                        for (char symbol : first_symbols) {
-                            if (symbol != 'e') {
-                                follow_set.insert(symbol);
-                            }
-                        }
-
-                        if (first_symbols.find('e') != first_symbols.end()) {
-                            find_follow_sets(non_terminal);
-
-                            unordered_set<char> follow_symbols = follow_sets[non_terminal];
-
-                            for (char symbol : follow_symbols) {
-                                follow_set.insert(symbol);
-                            }
-                        }
-                    }
-                    else {
-                        follow_set.insert(next_symbol);
-                    }
-                }
-                else {
-                    find_follow_sets(non_terminal);
-
-                    unordered_set<char> follow_symbols = follow_sets[non_terminal];
-
-                    for (char symbol : follow_symbols) {
-                        follow_set.insert(symbol);
-                    }
-                }
-            }
+                    follow_set.insert(next_symbol);
+            }    
         }
     }
-
     follow_sets[symbol] = follow_set;
 }
 
 int main() {
-       productions['S'] = {"Aa", "Bb"};
-    productions['A'] = {"aB", "aa"};
+    productions['S'] = {"aAa", "bBb"};
+    productions['A'] = {"aBa", "aa"};
     productions['B'] = {"b"};
 
     // compute first sets for all non-terminals in the grammar
