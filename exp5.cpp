@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 //input string: aabb
 using namespace std;
 
@@ -27,6 +27,7 @@ map<pair<int, char>, int> goTo = {
 
 // Define the SLR parser function
 bool SLRParser(string input) {
+    
     stack<int> stateStack;
     stack<char> symbolStack;
     int currentState = 0;
@@ -37,27 +38,10 @@ bool SLRParser(string input) {
     for (char c : input) {
         while (true) {
             int a = action[{currentState, c}];
-            if (a > 0) {
-                stateStack.push(a);
-                symbolStack.push(c);
-                currentState = a;
-                break;
-            } else if (a < 0) {
-                int rule = -a;
-                int rhsLength = rules[rule].length() - 3;
-
-                for (int i = 0; i < rhsLength; i++) {
-                    stateStack.pop();
-                    symbolStack.pop();
-                }
-
-                int nextState = goTo[{stateStack.top(), rules[rule][0]}];
-                stateStack.push(nextState);
-                symbolStack.push(rules[rule][0]);
-                currentState = nextState;
-            } else {
-                return false;
-            }
+            stateStack.push(a);
+            symbolStack.push(c);
+            currentState = a;
+            break;
         }
     }
 
